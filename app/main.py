@@ -2,6 +2,8 @@
 from fastapi import FastAPI, HTTPException, Depends, Response
 from pydantic import BaseModel
 from authx import AuthX, AuthXConfig
+from database import engine, Base
+import models
 
 app = FastAPI()
 
@@ -29,7 +31,7 @@ def login(creds: UserLoginSchema, response: Response):
 
         token = auth.create_access_token(uid="12345")
 
-        # Сохраняем токен в Cookie
+        # Сохраняем токен в CookieC:\Users\user\anaconda3\python.exe -u "c:\Users\user\Desktop\JobCraft_\main.py"
         auth.set_access_cookies(token, response)
 
         return {"message": "Успешная авторизация"}
@@ -47,3 +49,5 @@ def login(creds: UserLoginSchema, response: Response):
 )
 def protected():
     return {"message": "Доступ разрешён!"}
+
+Base.metadata.create_all(engine)
